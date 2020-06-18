@@ -1,7 +1,7 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
-    <h2>Essential Links</h2>
+    <!-- <h2>Essential Links</h2>
     <ul>
       <li>
         <a
@@ -79,7 +79,7 @@
           awesome-vue
         </a>
       </li>
-    </ul>
+    </ul> -->
   </div>
 </template>
 
@@ -88,7 +88,7 @@ export default {
   name: 'HelloWorld',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      msg: 'Welcome to Your SON OAM'
     }
   }
 }
@@ -96,6 +96,10 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+/* .hello {
+  background-color: rgb(222, 255, 255);
+} */
+
 h1, h2 {
   font-weight: normal;
 }

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id='app'>
     <nav class="navbar navbar-default navbar-fixed-top">
       <div class="navbar-header">
             <!-- <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -11,9 +11,10 @@
             <!-- <a class="navbar-brand" href=""> -->
             <!-- </a> -->
         <img class="logo" src="./assets/logo01.svg" >
-        <img class="h1" src="./assets/h1.svg" >
+        <!-- <img class="h1" src="./assets/h1.svg" > -->
+        <button type="button" class="btn btn-light" style="display:inline-block"><router-link to="/">Home</router-link></button>
+        <button type="button" class="btn btn-light" style="display:inline-block"><router-link to="/field">Field</router-link></button>
       </div>
-      <router-link to="/field">Field Page</router-link>
       <!-- <div id="navbar" class="navbar-collapse collapse">
         <ul class="nav navbar-nav navbar-right nav-icons">
           <li>
@@ -29,7 +30,9 @@
 
 <script>
 export default {
-  name: 'App'
+  name: 'App',
+  image: { 'backgroundColor': 'rgb(19, 224, 163)' }
+  // image: { backgroundImage: 'url()' }
 }
 </script>
 
@@ -38,9 +41,10 @@ export default {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
+  /* text-align: center; */
   color: #2c3e50;
-  margin-top: 60px;
+  background-color: rgb(222, 255, 255);;
+  /* margin-top: 60px; */
 }
 
 .logo {

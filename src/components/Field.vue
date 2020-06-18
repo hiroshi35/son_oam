@@ -20,7 +20,8 @@
         </button>
         <ul class="dropdown-menu">
           <li><a href="">場域效能</a></li>
-          <li><a href="">網路訊號即時回報</a></li>
+          <!-- <li><a href="">網路訊號即時回報</a></li> -->
+          <li><router-link to="/field/mdt">網路訊號即時回報</router-link></li>
         </ul>
       </div>
       <div class="btn-group">
@@ -33,129 +34,104 @@
           <li><a href="">立即執行</a></li>
         </ul>
       </div>
-    <button type="button" class="btn btn-info pull-right" :class="{mapDsp}" id="btn_show_map" @click="switchList()">地圖模式</button>
-    <button type="button" class="btn btn-info pull-right" :class="{display:listDsp}" id="btn_show_device_list" @click="counter+=1">基地台列表 (0)</button>
-    {{ counter }}
+    <button type="button" class="btn btn-info pull-right" :style="mapBtnDsp" id="btn_show_map" @click="switchList()">{{"基地台列表("+deviceList.length+")"}}</button>
+    <button type="button" class="btn btn-info pull-right" :style="listBtnDsp" id="btn_show_device_list" @click="switchMap()">地圖模式</button>
     </div>
     <div>
       <div class="maptitle col-md-12" id="map_scope" >
-        <div id="gmap"></div>
+        <div id="gmap" :style="mapDsp"></div>
+        <div class="celllist panel-body clearfix" id="list" :style="listDsp">
+          <h4>基地台列表</h4>
+          <div class="row">
+            <div class="col-md-6 cellnum">
+              目前有<strong>{{deviceList.length}}</strong>台基地台
+            </div>
+          </div>
+          <table class="table">
+            <thead>
+            <tr>
+            <th v-for="(item,key) in deviceListParam" :key="key">{{item}}</th>
+            </tr>
+            </thead>
+            <tbody id="device_list_tbody">
+              <tr v-for="(item,key) in deviceList" :key="key">
+                <th>{{key+1}}</th>
+                <th>{{item.deviceId}}</th>
+                <th>{{item.ipAddress}}</th>
+                <th>{{item.pci}}</th>
+                <th>{{item.txPower}}</th>
+                <th>{{item.beamPattern}}</th>
+                <th>{{item.status}}</th>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="col-md-4" id="panel_device_info">
       <div class="panel panel-default">
         <div id="collapseOne" class="panel">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a class="accordion-toggle " data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true">
+                Cell Information
+              </a>
+            </h4>
+          </div>
           <table>
             <tbody id="cell_info_area">
-            <tr>
-              <td>Device ID</td>
-              <td id="cia_id"></td>
-            </tr>
-            <tr>
-              <td>IP Address</td>
-              <td id="cia_ip"></td>
-            </tr>
-            <tr>
-              <td>Location</td>
-              <td id="cia_loc"></td>
-            </tr>
-            <tr>
-              <td>Physical Cell ID</td>
-              <td id="cia_pci"></td>
-            </tr>
-            <tr>
-              <td>Cell Identity</td>
-              <td id="cia_ci"></td>
-            </tr>
-            <tr>
-              <td>Last Inform Time</td>
-              <td id="cia_lit"></td>
-            </tr>
+              <tr v-for="(item,key) in cellInfo" :key="key">
+                <td>{{item}}</td>
+                <td>{{fillCellInfo(key)}}</td>
+                <!-- <td>123</td> -->
+                <!-- <td>{{deviceList[key].deviceId}}</td> -->
+              </tr>
             </tbody>
           </table>
         </div>
         <div id="collapseTwo" class="panel">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a class="accordion-toggle " data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true">
+                Neighbor List
+              </a>
+            </h4>
+          </div>
           <div class="panel-body">
             <table>
               <thead>
                 <tr>
+                  <th>#</th>
                   <th>PCI</th>
                   <th>Cell ID</th>
                   <th>PLMN ID</th>
                 </tr>
               </thead>
               <tbody id="anr_config_area">
-                  <tr><td>#</td><td></td><td></td><td></td></tr>
-                  <tr><td>#</td><td></td><td></td><td></td></tr>
-                  <tr><td>#</td><td></td><td></td><td></td></tr>
+                  <tr v-for="(item,key) in neighborExam" :key=key>
+                    <td>#</td>
+                    <td>{{item.pci}}</td>
+                    <td>{{item.cellId}}</td>
+                    <td>{{item.plmnId}}</td>
+                  </tr>
               </tbody>
             </table>
           </div>
         </div>
         <div id="collapseThree" class="panel">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a class="accordion-toggle " data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true">
+                Cell Settings
+              </a>
+            </h4>
+          </div>
           <table id="cell_config_table">
               <tbody id="cell_config_area">
-                  <tr>
-                      <td>Physical Cell ID</td>
-                      <td>
-                          <input type="text" value="499" id="cs_pci">
-                      </td>
-                      <td id="cs_pci_pending"></td>
-                  </tr>
-                  <tr>
-                      <td>Cell Identity</td>
-                      <td>
-                          <input type="text" value="304" id="cs_cid">
-                      </td>
-                      <td id="cs_cid_pending"></td>
-                  </tr>
-                  <tr>
-                      <td>PLMN Identity</td>
-                      <td>
-                          <input type="text" value="46001" id="cs_plmn">
-                      </td>
-                      <td id="cs_plmn_pending"></td>
-                  </tr>
-                  <tr>
-                      <td>Txpower (dbm)</td>
-                      <td>
-                          <input type="number" step="1" value="-30" id="cs_rsp">
-                      <td id="cs_rsp_pending"></td>
-                  </tr>
-                  <tr>
-                      <td>UL EARFCN</td>
-                      <td>
-                          <input type="text" value="38850" id="cs_ul_earfcn">
-                      </td>
-                      <td id="cs_ul_earfcn_pending"></td>
-                  </tr>
-                  <tr>
-                      <td>DL EARFCN</td>
-                      <td>
-                          <input type="text" value="38850" id="cs_dl_earfcn">
-                      </td>
-                      <td id="cs_dl_earfcn_pending"></td>
-                  </tr>
-                  <tr>
-                      <td>Beam Pattern No.</td>
-                      <td>
-                          <input type="text" value="1000" id="cs_beam_pattern_no">
-                      </td>
-                      <td id="cs_beam_pattern_no_pending"></td>
-                  </tr>
-                  <tr>
-                      <td>Longitude</td>
-                      <td>
-                          <input type="text" value="124.235" id="cs_longitude">
-                      </td>
-                      <td></td>
-                  </tr>
-                  <tr>
-                      <td>Latitude</td>
-                      <td>
-                          <input type="text" value="24.457" id="cs_latitude">
-                      </td>
-                      <td></td>
-                  </tr>
+                <tr v-for="(item,key) in cellSet" :key="key">
+                  <td>{{item}}</td>
+                  <!-- <td><input type="text" v-model="deviceList[focusEnb].ipAddress"></td> -->
+                  <td><input type="text" :value="fillCellSetting(key)"></td>
+                </tr>
               </tbody>
           </table>
         </div>
@@ -171,23 +147,88 @@ export default {
   data () {
     return {
       msg: 'SON',
-      mapDsp: 'none',
-      listDsp: 'static',
+      focusEnb: 0,
+      mapBtnDsp: {'display': 'inline-block'},
+      listBtnDsp: {'display': 'none'},
+      mapDsp: {'display': 'block'},
+      listDsp: {'display': 'none'},
+      deviceListParam: ['No', 'Device ID', 'IP Address', 'PCI', 'TxPower', 'Beam Pattern', 'Status'],
+      neighborExam: [
+        {
+          'pci': 1,
+          'cellId': 1,
+          'plmnId': 46656
+        },
+        {
+          'pci': 2,
+          'cellId': 2,
+          'plmnId': 46656
+        }
+      ],
+      cellInfo: ['Device ID', 'IP Address', 'Location', 'Physical Cell ID', 'Cell Identity', 'Last Inform Time'],
+      cellSet: ['Physical Cell ID', 'Cell Identity', 'PLMN Identity', 'Txpower (dbm)', 'UL EARFCN', 'DL EARFCN', 'Beam Pattern No.', 'Longitude', 'Latitude'],
+      deviceList: [
+        {
+          'No': 1,
+          'plmn': 46656,
+          'deviceId': 'QWE',
+          'ipAddress': '10.101.129.1',
+          'pci': 1,
+          'txPower': 0,
+          'beamPattern': 900,
+          'earfcn': 43290,
+          'status': 'Active',
+          'gps': {'lat': 24, 'lng': 120.495},
+          'lastInform': '20200618 12:00:00'
+        },
+        {
+          'No': 2,
+          'plmn': 46656,
+          'deviceId': 'ABC',
+          'ipAddress': '10.101.129.2',
+          'pci': 2,
+          'txPower': 0,
+          'beamPattern': 900,
+          'earfcn': 43290,
+          'status': 'Active',
+          'gps': {'lat': 24, 'lng': 120.500},
+          'lastInform': '20200618 12:00:00'
+        },
+        {
+          'No': 3,
+          'plmn': 46656,
+          'deviceId': 'HJK',
+          'ipAddress': '10.101.129.3',
+          'pci': 3,
+          'txPower': 0,
+          'beamPattern': 900,
+          'earfcn': 43290,
+          'status': 'Active',
+          'gps': {'lat': 24, 'lng': 120.505},
+          'lastInform': '20200618 12:00:00'
+        }
+      ],
       gMapParams: {
         gmap: null
       },
       counter: 0
     }
   },
+  computed: {
+    // fillCellSetting (key) {
+    //   return key
+    // }
+  },
   mounted () {
     this.initMap()
+    this.initMapMarker()
     // this.setMarker()
   },
   methods: {
     initMap () {
       // eslint-disable-next-line no-undef
       this.gmap = new google.maps.Map(document.getElementById('gmap'), {
-        center: { lat: 24, lng: 121 },
+        center: { lat: 24, lng: 120.5 },
         zoom: 15,
         maxZoom: 20,
         minZoom: 3,
@@ -195,8 +236,80 @@ export default {
         mapTypeControl: false
       })
     },
+    initMapMarker () {
+      for (let i = 0; i < this.deviceList.length; i++) {
+        // eslint-disable-next-line no-undef
+        let latlng = new google.maps.LatLng(this.deviceList[i].gps.lat, this.deviceList[i].gps.lng)
+        // eslint-disable-next-line no-undef
+        let oMarker = new google.maps.Marker({
+          // position: latlng,
+          map: this.gmap,
+          // icon: IconNormal,
+          draggable: false,
+          zIndex: 1,
+          label: String(this.deviceList[i].pci)
+          // label: '0'
+        })
+        oMarker.setPosition(latlng)
+        // eslint-disable-next-line no-undef
+        google.maps.event.addListener(oMarker, 'click', () => { this.focusEnb = this.deviceList[i].No - 1 })
+      }
+    },
     switchList () {
-      console.log('yoyoman')
+      console.log('switch to list mode')
+      this.mapBtnDsp.display = 'none'
+      this.listBtnDsp.display = 'inline-block'
+      this.mapDsp.display = 'none'
+      this.listDsp.display = 'block'
+    },
+    switchMap () {
+      console.log('switch to map mode')
+      this.mapBtnDsp.display = 'inline-block'
+      this.listBtnDsp.display = 'none'
+      this.mapDsp.display = 'block'
+      this.listDsp.display = 'none'
+    },
+    fillCellInfo (key) {
+      switch (key) {
+        case 0:
+          return this.deviceList[this.focusEnb].deviceId
+        case 1:
+          return this.deviceList[this.focusEnb].ipAddress
+        case 2:
+          return this.deviceList[this.focusEnb].gps.lat + ',' + this.deviceList[this.focusEnb].gps.lng
+        case 3:
+          return this.deviceList[this.focusEnb].pci
+        case 4:
+          return this.deviceList[this.focusEnb].pci
+        case 5:
+          return this.deviceList[this.focusEnb].lastInform
+        default:
+          return NaN
+      }
+    },
+    fillCellSetting (key) {
+      switch (key) {
+        case 0:
+          return this.deviceList[this.focusEnb].pci
+        case 1:
+          return this.deviceList[this.focusEnb].pci
+        case 2:
+          return this.deviceList[this.focusEnb].plmn
+        case 3:
+          return this.deviceList[this.focusEnb].txPower
+        case 4:
+          return this.deviceList[this.focusEnb].earfcn
+        case 5:
+          return this.deviceList[this.focusEnb].earfcn
+        case 6:
+          return this.deviceList[this.focusEnb].beamPattern
+        case 7:
+          return this.deviceList[this.focusEnb].gps.lng
+        case 8:
+          return this.deviceList[this.focusEnb].gps.lat
+        default:
+          return NaN
+      }
     }
   }
 }
