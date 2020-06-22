@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id='field'>
     <div class="col-md-12">
       <div class="btn-group">
         <button type="button" class="btn btn-info">場域配置</button>
@@ -207,6 +207,19 @@ export default {
           'gps': {'lat': 24, 'lng': 120.505},
           'lastInform': '20200618 12:00:00'
         }
+        // {
+        //   'No': 4,
+        //   'plmn': 46656,
+        //   'deviceId': 'QWE',
+        //   'ipAddress': '10.101.129.4',
+        //   'pci': 4,
+        //   'txPower': 0,
+        //   'beamPattern': 900,
+        //   'earfcn': 43290,
+        //   'status': 'Active',
+        //   'gps': {'lat': 24, 'lng': 120.510},
+        //   'lastInform': '20200618 12:00:00'
+        // }
       ],
       gMapParams: {
         gmap: null
@@ -357,5 +370,10 @@ export default {
   margin: 0.5em;
   padding: 0.5em;
   /* border: 1px solid rgb(112, 174, 255); */
+}
+
+#field {
+  background: rgb(246, 250, 255);
+  padding: 1em;
 }
 </style>
