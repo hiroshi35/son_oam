@@ -1,7 +1,7 @@
 <template>
   <div id='app'>
-    <nav class="navbar">
-      <div>
+    <nav class="navbar appNav">
+      <div id='logoZone'>
             <!-- <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
@@ -12,8 +12,11 @@
             <!-- </a> -->
         <img class="logo" src="./assets/logo01.svg" >
         <img class="h1" src="./assets/h1.svg" >
-        <button type="button" class="btn btn-light" style="display:inline-block"><router-link to="/">Home</router-link></button>
-        <button type="button" class="btn btn-light" style="display:inline-block"><router-link to="/field">Field</router-link></button>
+      </div>
+      <div>
+        <button type="button" class="btn btn-light"><router-link to="/">Home</router-link></button>
+        <button type="button" class="btn btn-light"><router-link to="/field">Field</router-link></button>
+        <button type="button" class="btn btn-light"><router-link to="/">Alert</router-link></button>
       </div>
       <!-- <div id="navbar" class="navbar-collapse collapse">
         <ul class="nav navbar-nav navbar-right nav-icons">
@@ -44,9 +47,18 @@ export default {
   /* text-align: center; */
   /* height: 5%; */
   color: #2c3e50;
-  background-color: rgb(0, 140, 255);
+  /* background-color: rgb(196, 228, 255); */
   padding: 0.1em;
   /* margin-top: 60px; */
+}
+
+#logoZone {
+  display: inline-block;
+}
+
+.appNav {
+  /* display:inline-block; */
+  background-color: rgb(0, 163, 141);
 }
 
 .logo {
@@ -58,9 +70,5 @@ export default {
 .h1 {
     height: 45px;
 }
-/* 
-router-link :hover {
-  text-decoration: none;
-} */
 
 </style>
