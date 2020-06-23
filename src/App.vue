@@ -16,7 +16,7 @@
       <div>
         <button type="button" class="btn btn-light"><router-link to="/">Home</router-link></button>
         <button type="button" class="btn btn-light"><router-link to="/field">Field</router-link></button>
-        <button type="button" class="btn btn-light"><router-link to="/">Alert</router-link></button>
+        <button type="button" class="btn btn-light"><router-link to="/fieldList">FieldList</router-link></button>
       </div>
       <!-- <div id="navbar" class="navbar-collapse collapse">
         <ul class="nav navbar-nav navbar-right nav-icons">

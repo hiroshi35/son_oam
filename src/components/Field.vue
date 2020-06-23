@@ -79,7 +79,8 @@
             <tbody id="cell_info_area">
               <tr v-for="(item,key) in cellInfo" :key="key">
                 <td>{{item}}</td>
-                <td>{{fillCellInfo(key)}}</td>
+                <!-- <td>0</td> -->
+                <td v-if="deviceList[0] != undefined">{{fillCellInfo(key)}}</td>
                 <!-- <td>123</td> -->
                 <!-- <td>{{deviceList[key].deviceId}}</td> -->
               </tr>
@@ -128,7 +129,8 @@
                 <tr v-for="(item,key) in cellSet" :key="key">
                   <td>{{item}}</td>
                   <!-- <td><input type="text" v-model="deviceList[focusEnb].ipAddress"></td> -->
-                  <td><input type="text" :value="fillCellSetting(key)"></td>
+                  <td v-if="deviceList[0] != undefined"><input type="text" :value="fillCellSetting(key)"></td>
+                  <!-- <td><input type="text" :value="0"></td> -->
                 </tr>
               </tbody>
           </table>
@@ -171,99 +173,16 @@ export default {
       ],
       cellInfo: ['Device ID', 'IP Address', 'Location', 'Physical Cell ID', 'Cell Identity', 'Last Inform Time'],
       cellSet: ['Physical Cell ID', 'Cell Identity', 'PLMN Identity', 'Txpower (dbm)', 'UL EARFCN', 'DL EARFCN', 'Beam Pattern No.', 'Longitude', 'Latitude'],
-      deviceList: [
-        {
-          'No': 1,
-          'plmn': 46656,
-          'deviceId': '000001-FAP-000H11415971',
-          'ipAddress': '10.101.129.107',
-          'pci': 107,
-          'txPower': 0,
-          'beamPattern': 900,
-          'earfcn': 43290,
-          'status': 'Active',
-          'gps': {'lat': 24.7735731, 'lng': 121.0442469},
-          'lastInform': '20200618 12:00:00'
-        },
-        {
-          'No': 2,
-          'plmn': 46656,
-          'deviceId': '000001-FAP-000H11415967',
-          'ipAddress': '10.101.129.108',
-          'pci': 108,
-          'txPower': 0,
-          'beamPattern': 900,
-          'earfcn': 43290,
-          'status': 'Active',
-          'gps': {'lat': 24.773683, 'lng': 121.044001},
-          'lastInform': '20200618 12:00:00'
-        },
-        {
-          'No': 3,
-          'plmn': 46656,
-          'deviceId': '000001-FAP-000H11415981',
-          'ipAddress': '10.101.129.109',
-          'pci': 109,
-          'txPower': 0,
-          'beamPattern': 900,
-          'earfcn': 43290,
-          'status': 'Active',
-          'gps': {'lat': 24.773836, 'lng': 121.043903},
-          'lastInform': '20200618 12:00:00'
-        },
-        {
-          'No': 4,
-          'plmn': 46656,
-          'deviceId': '000001-FAP-000H11415973',
-          'ipAddress': '10.101.129.110',
-          'pci': 110,
-          'txPower': 0,
-          'beamPattern': 900,
-          'earfcn': 43290,
-          'status': 'Active',
-          'gps': {'lat': 24.773993, 'lng': 121.043876},
-          'lastInform': '20200618 12:00:00'
-        },
-        {
-          'No': 5,
-          'plmn': 46656,
-          'deviceId': '000001-FAP-000H11415965',
-          'ipAddress': '10.101.129.111',
-          'pci': 111,
-          'txPower': 0,
-          'beamPattern': 900,
-          'earfcn': 43290,
-          'status': 'Active',
-          'gps': {'lat': 24.773859, 'lng': 121.043761},
-          'lastInform': '20200618 12:00:00'
-        },
-        {
-          'No': 6,
-          'plmn': 46656,
-          'deviceId': '000001-FAP-000H11415988',
-          'ipAddress': '10.101.129.112',
-          'pci': 112,
-          'txPower': 0,
-          'beamPattern': 900,
-          'earfcn': 43290,
-          'status': 'Active',
-          'gps': {'lat': 24.774009, 'lng': 121.0435551},
-          'lastInform': '20200618 12:00:00'
-        }
-      ],
+      deviceList: [],
       gMapParams: {
         gmap: null
       },
       counter: 0
     }
   },
-  computed: {
-    // fillCellSetting (key) {
-    //   return key
-    // }
-  },
+  computed: {},
   mounted () {
-    this.$http.get('http://localhost:5888/son/field/fieldList')
+    this.$http.get('http://10.101.129.52:5888/son/field/fieldList')
       .then(rsp => {
         // console.log(rsp.body.fieldList[1])
         let param = rsp.body.fieldList[1]
@@ -276,16 +195,46 @@ export default {
           this.mapInfo.west = Number(param.west)
           this.initMap()
         }
-        return this.$http.get('http://localhost:5888/son/oam/710/DeviceListSort?key=<key>')
+        let attr = {
+          'fieldId': '710',
+          'deviceList': []
+        }
+        return this.$http.post('http://10.101.129.51:5888/hems/getCertainParameters', attr)
       })
       .then(rsp => {
-        console.log(rsp)
+        let param = rsp.data.parameter
+        for (let i = 0; i < param.length; i++) {
+          console.log(param[i])
+          let device = {
+            'No': i + 1,
+            'plmn': param[i]['strPlmnId'],
+            'ipAddress': param[i]['strDeviceIP'],
+            'deviceId': param[i]['deviceName'],
+            'pci': param[i]['strPhyCellID'],
+            'cellId': param[i]['strCellID'],
+            'txPower': param[i]['strReferenceSignalPower'],
+            'beamPattern': param[i]['strBeamPatternNo'],
+            'dlEarfcn': param[i]['strDlEarfcn'],
+            'ulEarfcn': param[i]['strUlEarfcn'],
+            'status': 'Active',
+            'gps': {'lat': param[i]['strLatitude'], 'lng': param[i]['strLongitude']},
+            'lastInform': param[i]['strLastInform']
+          }
+          this.deviceList.push(device)
+        }
+        // console.log(param)
+        return this.$http.get('http://10.101.129.52:5888/son/oam/710/DeviceListSort?key=')
+      })
+      .then(rsp => {
+        console.log(rsp.body.devices)
+        let param = rsp.body.devices
+        for (let i = 0; i < this.deviceList.length; i++) {
+          this.deviceList[i]['gps']['lat'] = param[i]['latitude']
+          this.deviceList[i]['gps']['lng'] = param[i]['longitude']
+        }
         this.initMapMarker()
-        return this.$http.post('http://10.101.129.51:5888/hems/getCertainParameters', {'fieldId': 710, 'devieList': []}, {emulateJSON: true})
-      })
-      .then(rsp => {
-        console.log(rsp)
-      })
+      }
+      )
       .catch(err => {
         console.log(err)
       })
@@ -366,9 +315,9 @@ export default {
         case 3:
           return this.deviceList[this.focusEnb].txPower
         case 4:
-          return this.deviceList[this.focusEnb].earfcn
+          return this.deviceList[this.focusEnb].dlEarfcn
         case 5:
-          return this.deviceList[this.focusEnb].earfcn
+          return this.deviceList[this.focusEnb].ulEarfcn
         case 6:
           return this.deviceList[this.focusEnb].beamPattern
         case 7:

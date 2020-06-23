@@ -13,7 +13,7 @@ import VueResource from 'vue-resource'
 Vue.config.productionTip = false
 Vue.use(BootstrapVue)
 Vue.use(VueResource)
-// Vue.use(vueaxios)
+// Vue.use(axios)
 
 /* eslint-disable no-new */
 new Vue({
