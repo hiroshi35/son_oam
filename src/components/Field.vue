@@ -34,8 +34,8 @@
           <li><a href="">立即執行</a></li>
         </ul>
       </div>
-      <button type="button" class="btn btn-info" :style="mapBtnDsp" id="btn_show_map" @click="switchList()">{{"基地台列表("+deviceList.length+")"}}</button>
-      <button type="button" class="btn btn-info" :style="listBtnDsp" id="btn_show_device_list" @click="switchMap()">地圖模式</button>
+      <button type="button" class="btn btn-info pull-right" :style="mapBtnDsp" id="btn_show_map_deivce" @click="switchList()">{{"基地台列表("+deviceList.length+")"}}</button>
+      <button type="button" class="btn btn-info pull-right" :style="listBtnDsp" id="btn_show_map_deivce" @click="switchMap()">地圖模式</button>
       <!-- MAP AND LIST -->
       <div id="gmap" :style="mapDsp" class="map_scope"></div>
       <div class="celllist panel-body clearfix" id="list" :style="listDsp">
@@ -181,6 +181,7 @@ export default {
     }
   },
   computed: {},
+  // props: ['fieldId'],
   mounted () {
     this.$http.get('http://10.101.129.52:5888/son/field/fieldList')
       .then(rsp => {
@@ -196,7 +197,8 @@ export default {
           this.initMap()
         }
         let attr = {
-          'fieldId': '710',
+          // 'fieldId': this.$router.params,
+          fieldId: 710,
           'deviceList': []
         }
         return this.$http.post('http://10.101.129.51:5888/hems/getCertainParameters', attr)
@@ -377,22 +379,9 @@ export default {
   /* float: right; */
 }
 
-#collapseOne {
-  /* margin: 0.5em;
-  padding: 0.5em; */
-  /* border: 1px solid rgb(112, 174, 255); */
-}
-
-#collapseTwo {
-  /* margin: 0.5em;
-  padding: 0.5em; */
-  /* border: 1px solid rgb(112, 174, 255); */
-}
-
-#collapseThree {
-  /* margin: 0.5em;
-  padding: 0.5em; */
-  /* border: 1px solid rgb(112, 174, 255); */
+#btn_show_map_deivce {
+  float: right;
+  width: 150px;
 }
 
 #field {

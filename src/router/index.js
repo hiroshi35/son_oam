@@ -13,7 +13,7 @@ export default new Router({
   routes: [
     {
       path: '/field',
-      name: 'field',
+      name: 'Field',
       component: Field
       // children: [
       //   {

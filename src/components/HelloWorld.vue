@@ -2,7 +2,7 @@
   <div id="hello">
   <!-- <div> -->
     <h1>{{ msg }}</h1>
-    <!-- <h2>Essential Links</h2>
+        <!-- <h2>Essential Links</h2>
     <ul>
       <li>
         <a
@@ -103,7 +103,8 @@ export default {
 } */
 #hello {
   background-color: rgb(222, 255, 255);
-  height: auto;
+  /* height: 100%; */
+  height: 800px;
 }
 
 /* h1, h2 {

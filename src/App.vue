@@ -10,13 +10,14 @@
             </button> -->
             <!-- <a class="navbar-brand" href=""> -->
             <!-- </a> -->
-        <img class="logo" src="./assets/logo01.svg" >
+        <router-link to="/"><img class="logo" src="./assets/logo01.svg" ></router-link>
         <img class="h1" src="./assets/h1.svg" >
       </div>
       <div>
-        <button type="button" class="btn btn-light"><router-link to="/">Home</router-link></button>
-        <button type="button" class="btn btn-light"><router-link to="/field">Field</router-link></button>
-        <button type="button" class="btn btn-light"><router-link to="/fieldList">FieldList</router-link></button>
+        <!-- <button type="button" class="btn btn-light"><router-link to="/">Home</router-link></button> -->
+        <router-link to="/fieldList"><img class="rightLink" src="./assets/field.svg" ></router-link>
+        <router-link :to="{name:'Field', params: 710}"><img class="rightLink" src="./assets/alarm.svg" ></router-link>
+        <!-- <button type="button" class="btn btn-light"><router-link to="/fieldList">FieldList</router-link></button> -->
       </div>
       <!-- <div id="navbar" class="navbar-collapse collapse">
         <ul class="nav navbar-nav navbar-right nav-icons">
@@ -67,8 +68,16 @@ export default {
     /* padding-bottom: 7px; */
 }
 
+.rightLink {
+  height: 50px;
+  width: auto;
+  display: inline-block;
+  /* margin: 0 auto 5px; */
+}
+
 .h1 {
-    height: 45px;
+  margin-top: 5px;
+  height: 45px;
 }
 
 </style>
