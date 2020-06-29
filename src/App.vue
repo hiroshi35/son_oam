@@ -16,7 +16,7 @@
       <div>
         <!-- <button type="button" class="btn btn-light"><router-link to="/">Home</router-link></button> -->
         <router-link to="/fieldList"><img class="rightLink" src="./assets/field.svg" ></router-link>
-        <router-link :to="{name:'Field', params: 710}"><img class="rightLink" src="./assets/alarm.svg" ></router-link>
+        <!-- <router-link :to="{name:'modal'}"><img class="rightLink" src="./assets/alarm.svg" ></router-link> -->
         <!-- <button type="button" class="btn btn-light"><router-link to="/fieldList">FieldList</router-link></button> -->
       </div>
       <!-- <div id="navbar" class="navbar-collapse collapse">

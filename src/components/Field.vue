@@ -1,5 +1,7 @@
 <template>
   <div id='field'>
+    <Modaldog v-if='showEditFieldModal' :fieldInfo='fieldInfo' :fieldId='this.$route.params.id' style='display:block' @close="showEditFieldModal = false">
+    </Modaldog>
     <div class="col-md-8" id='mapZone'>
       <div class="btn-group">
         <button type="button" class="btn btn-info">場域配置</button>
@@ -8,7 +10,7 @@
           <span class="sr-only">Toggle Dropdown</span>
         </button>
         <ul class="dropdown-menu">
-          <li><a href="">場域編輯</a></li>
+          <li @click="showEditFieldModal=true">場域編輯</li>
           <li><a href="">運行策略</a></li>
         </ul>
       </div>
@@ -134,6 +136,7 @@
                 </tr>
               </tbody>
           </table>
+          <button class="btn btn-warning" id='btn-fixparam'>修改參數</button>
         </div>
       <!-- </div> -->
     </div>
@@ -141,17 +144,20 @@
 </template>
 
 <script>
+import EditFieldModal from './EditFieldModal.vue'
+
 export default {
   name: 'Field',
   data () {
     return {
+      showEditFieldModal: false,
       msg: 'SON',
-      mapInfo: {
+      fieldInfo: {
         north: 0,
         south: 0,
         west: 0,
         east: 0,
-        fieldName: 'ITRI-ALPHA-5F'
+        fieldName: ''
       },
       focusEnb: 0,
       mapBtnDsp: {'display': 'inline-block'},
@@ -180,25 +186,42 @@ export default {
       counter: 0
     }
   },
+  components: {
+    Modaldog: EditFieldModal
+  },
   computed: {},
   // props: ['fieldId'],
   mounted () {
     this.$http.get('http://10.101.129.52:5888/son/field/fieldList')
       .then(rsp => {
-        // console.log(rsp.body.fieldList[1])
-        let param = rsp.body.fieldList[1]
+        let param = {}
+        // console.log(rsp.body.fieldList)
+        rsp.body.fieldList.forEach(el => {
+          if (el.fieldId === this.$route.params.id) {
+            console.log(`find ${el.fieldId}`)
+            param = el
+          }
+        })
+        // let param = rsp.body.fieldList[1]
         // console.log(param.east)
         if (param !== undefined) {
           // console.log('HAA')
-          this.mapInfo.north = Number(param.north)
-          this.mapInfo.south = Number(param.south)
-          this.mapInfo.east = Number(param.east)
-          this.mapInfo.west = Number(param.west)
+          this.fieldInfo.north = Number(param.north)
+          this.fieldInfo.south = Number(param.south)
+          this.fieldInfo.east = Number(param.east)
+          this.fieldInfo.west = Number(param.west)
+          this.fieldInfo.fieldName = param.fieldName
+          this.fieldInfo.fieldType = param.fieldType
+          // this.fieldInfo.northMap = param.extraInfo.northMap
+          // this.fieldInfo.southMap = param.extraInfo.southMap
+          // this.fieldInfo.eastMap = param.extraInfo.eastMap
+          // this.fieldInfo.westMap = param.extraInfo.westMap
+          this.fieldInfo.pathLossModel = param.pathLossModel
           this.initMap()
         }
         let attr = {
           // 'fieldId': this.$router.params,
-          fieldId: 710,
+          fieldId: this.$route.params.id,
           'deviceList': []
         }
         return this.$http.post('http://10.101.129.51:5888/hems/getCertainParameters', attr)
@@ -225,16 +248,17 @@ export default {
           this.deviceList.push(device)
         }
         // console.log(param)
-        return this.$http.get('http://10.101.129.52:5888/son/oam/710/DeviceListSort?key=')
+        return this.$http.get(`http://10.101.129.52:5888/son/oam/${this.$route.params.id}/DeviceListSort?key=`)
       })
       .then(rsp => {
-        console.log(rsp.body.devices)
+        // console.log(rsp.body.devices)
         let param = rsp.body.devices
         for (let i = 0; i < this.deviceList.length; i++) {
           this.deviceList[i]['gps']['lat'] = param[i]['latitude']
           this.deviceList[i]['gps']['lng'] = param[i]['longitude']
         }
         this.initMapMarker()
+        // console.log(this.$route.params.id)
       }
       )
       .catch(err => {
@@ -247,7 +271,7 @@ export default {
     initMap () {
       // eslint-disable-next-line no-undef
       this.gmap = new google.maps.Map(document.getElementById('gmap'), {
-        center: { lat: (this.mapInfo.north + this.mapInfo.south) / 2, lng: (this.mapInfo.east + this.mapInfo.west) / 2 },
+        center: { lat: (this.fieldInfo.north + this.fieldInfo.south) / 2, lng: (this.fieldInfo.east + this.fieldInfo.west) / 2 },
         zoom: 21,
         maxZoom: 20,
         minZoom: 3,
@@ -394,5 +418,9 @@ export default {
 h4 {
   color: rgb(1, 60, 255);
 }
+
+/* #btn-fixparam {
+  padding: 100px, 100px;
+} */
 
 </style>

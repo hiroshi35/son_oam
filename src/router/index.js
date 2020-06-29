@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
 import Field from '@/components/Field'
 import FieldList from '@/components/FieldList'
+// import Modal from '@/components/Modal'
 
 // import Mdt from '@/components/Mdt'
 Vue.use(Router)
@@ -12,16 +13,9 @@ export default new Router({
   // base: __dirname,
   routes: [
     {
-      path: '/field',
+      path: '/field/:id',
       name: 'Field',
       component: Field
-      // children: [
-      //   {
-      //     path: 'mdt',
-      //     name: 'Mdt',
-      //     component: Mdt
-      //   }
-      // ]
     },
     {
       path: '/',
@@ -33,5 +27,10 @@ export default new Router({
       name: 'fieldList',
       component: FieldList
     }
+    // {
+    //   path: '/modal',
+    //   name: 'modal',
+    //   component: Modal
+    // }
   ]
 })
