@@ -4,18 +4,18 @@
     </Modaldog>
     <div class="col-md-8" id='mapZone'>
       <div class="btn-group">
-        <button type="button" class="btn btn-info">場域配置</button>
+        <button type="button" class="btn btn-info"><strong>場域配置</strong></button>
         <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <span class="caret"  style="margin: 0"></span>
           <span class="sr-only">Toggle Dropdown</span>
         </button>
         <ul class="dropdown-menu">
-          <li @click="showEditFieldModal=true">場域編輯</li>
+          <li @click="showEditFieldModal=true" style="cursor: pointer;">場域編輯</li>
           <li><a href="">運行策略</a></li>
         </ul>
       </div>
       <div class="btn-group">
-        <button type="button" class="btn btn-info">場域報表</button>
+        <button type="button" class="btn btn-info"><strong>場域報表</strong></button>
         <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <span class="caret" style="margin: 0"></span>
           <span class="sr-only">Toggle Dropdown</span>
@@ -27,7 +27,7 @@
         </ul>
       </div>
       <div class="btn-group">
-        <button type="button" class="btn btn-info">場域優化</button>
+        <button type="button" class="btn btn-info"><strong>場域優化</strong></button>
         <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <span class="caret" style="margin: 0"></span>
           <span class="sr-only">Toggle Dropdown</span>
@@ -40,15 +40,15 @@
       <button type="button" class="btn btn-info pull-right" :style="listBtnDsp" id="btn_show_map_deivce" @click="switchMap()">地圖模式</button>
       <!-- MAP AND LIST -->
       <div id="gmap" :style="mapDsp" class="map_scope"></div>
-      <div class="celllist panel-body clearfix" id="list" :style="listDsp">
+      <div class="celllist clearfix" id="list" :style="listDsp">
         <h4>基地台列表</h4>
         <div class="row">
           <div class="col-md-6 cellnum">
-            目前有<strong>{{deviceList.length}}</strong>台基地台
+            目前有{{deviceList.length}}台基地台
           </div>
         </div>
-        <table class="table">
-          <thead>
+        <table class='table table-hover table-primary'>
+          <thead class='thead-dark'>
           <tr>
           <th v-for="(item,key) in deviceListParam" :key="key">{{item}}</th>
           </tr>
@@ -67,76 +67,80 @@
         </table>
       </div>
     </div>
-    <div class="col-md-4" id="panelZone">
-      <!-- <div class="panel panel-default"> -->
-        <div id="collapseOne" class="panel">
-          <div class="panel-heading">
-            <h4 class="panel-title">
-              <!-- <a class="accordion-toggle " data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true"> -->
-                Cell Information
-              <!-- </a> -->
-            </h4>
+    <div class="col-md-4" id="panelZone" style="overflow: auto">
+      <!-- <div class="panel-group"> -->
+        <div id="collapseOne" class="card panel">
+          <div class="card-header bg-info">
+            <a class="accordion-toggle" data-toggle="collapse" href="#collapsefirst" aria-expanded="true">
+              <strong>Cell Information</strong>
+            </a>
           </div>
-          <table>
-            <tbody id="cell_info_area">
-              <tr v-for="(item,key) in cellInfo" :key="key">
-                <td>{{item}}</td>
-                <!-- <td>0</td> -->
-                <td v-if="deviceList[0] != undefined">{{fillCellInfo(key)}}</td>
-                <!-- <td>123</td> -->
-                <!-- <td>{{deviceList[key].deviceId}}</td> -->
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div id="collapseTwo" class="panel">
-          <div class="panel-heading">
-            <h4 class="panel-title">
-              <!-- <a class="accordion-toggle " data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true"> -->
-                Neighbor List
-              <!-- </a> -->
-            </h4>
-          </div>
-          <div class="panel-body">
-            <table>
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>PCI</th>
-                  <th>Cell ID</th>
-                  <th>PLMN ID</th>
-                </tr>
-              </thead>
-              <tbody id="anr_config_area">
-                  <tr v-for="(item,key) in neighborExam" :key=key>
-                    <td>#</td>
-                    <td>{{item.pci}}</td>
-                    <td>{{item.cellId}}</td>
-                    <td>{{item.plmnId}}</td>
+          <div class="collapse show" id="collapsefirst">
+            <div class="card-body bg-light">
+              <table>
+                <tbody id="cell_info_area">
+                  <tr v-for="(item,key) in cellInfo" :key="key">
+                    <td>{{item}}</td>
+                    <!-- <td>0</td> -->
+                    <td v-if="deviceList[0] != undefined">{{fillCellInfo(key)}}</td>
+                    <!-- <td>123</td> -->
+                    <!-- <td>{{deviceList[key].deviceId}}</td> -->
                   </tr>
-              </tbody>
-            </table>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
-        <div id="collapseThree" class="panel">
-          <div class="panel-heading">
-            <h4 class="panel-title">
-              <!-- <a class="accordion-toggle " data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true"> -->
-                Cell Settings
-              <!-- </a> -->
-            </h4>
+        <div id="collapseTwo" class="card panel">
+          <div class="card-header bg-info">
+            <a class="accordion-toggle" data-toggle="collapse" href="#collapseSec" aria-expanded="true">
+              <strong>Neighbor List</strong>
+            </a>
           </div>
-          <table id="cell_config_table">
-              <tbody id="cell_config_area">
-                <tr v-for="(item,key) in cellSet" :key="key">
-                  <td>{{item}}</td>
-                  <!-- <td><input type="text" v-model="deviceList[focusEnb].ipAddress"></td> -->
-                  <td v-if="deviceList[0] != undefined"><input type="text" :value="fillCellSetting(key)"></td>
-                  <!-- <td><input type="text" :value="0"></td> -->
-                </tr>
-              </tbody>
-          </table>
-          <button class="btn btn-warning" id='btn-fixparam'>修改參數</button>
+          <div class="collapse show" id="collapseSec">
+            <div class="card-body bg-light">
+              <table>
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>PCI</th>
+                    <th>Cell ID</th>
+                    <th>PLMN ID</th>
+                  </tr>
+                </thead>
+                <tbody id="anr_config_area">
+                    <tr v-for="(item,key) in neighborExam" :key=key>
+                      <td>#</td>
+                      <td>{{item.pci}}</td>
+                      <td>{{item.cellId}}</td>
+                      <td>{{item.plmnId}}</td>
+                    </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div id="collapseThree" class="card">
+          <div class="card-header bg-info">
+            <a class="accordion-toggle" data-toggle="collapse" href="#collapseThird" aria-expanded="true">
+             <strong>Cell Settings</strong>
+            </a>
+          </div>
+          <div class="collapse show" id="collapseThird">
+            <div class="card-body bg-light">
+              <table id="cell_config_table">
+                  <tbody id="cell_config_area">
+                    <tr v-for="(item,key) in cellSet" :key="key">
+                      <td>{{item}}</td>
+                      <!-- <td><input type="text" v-model="deviceList[focusEnb].ipAddress"></td> -->
+                      <td v-if="deviceList[0] != undefined"><input type="text" :value="fillCellSetting(key)"></td>
+                      <!-- <td><input type="text" :value="0"></td> -->
+                    </tr>
+                  </tbody>
+              </table>
+              <center><button class="btn btn-warning " id='btn-fixparam'>修改參數</button></center>
+            </div>
+          </div>
         </div>
       <!-- </div> -->
     </div>
@@ -394,11 +398,11 @@ export default {
 
 #panelZone {
   /* border: 1px solid rgb(112, 174, 255); */
-  background: rgb(223, 237, 255);
-  /* width: 40%; */
-  height: 765px;
-  padding-top: 10px;
-  box-sizing: border-box;
+  background: rgb(225, 255, 244);
+  width: 40%;
+  /* height: 765px; */
+  /* padding-top: 10px;
+  box-sizing: border-box; */
   /* display: inline-block; */
   /* float: right; */
 }
@@ -410,17 +414,54 @@ export default {
 
 #field {
   display: flex;
+  height: 900px;
   /* background: rgb(173, 142, 56); */
   /* border: 1px solid rgb(207, 21, 21);; */
   /* padding-top: 10px; */
 }
 
-h4 {
-  color: rgb(1, 60, 255);
+strong {
+  color: #fff;
 }
 
-/* #btn-fixparam {
-  padding: 100px, 100px;
-} */
+.panel {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+#collapseOne table tr {
+  border-bottom: 2px solid #fff;
+  padding: 10px;
+}
+
+#collapseThree table tr {
+  border-bottom: 2px solid #fff;
+  padding: 10px;
+}
+
+#collapseTwo table tr {
+  border-bottom: 1px solid #fff;
+}
+#collapseTwo table thead tr {
+  border-bottom: 2px solid #fff;
+}
+
+table {
+  width: 100%;
+  /* border-collapse: collapse;
+  border: 0px groove; */
+}
+
+.table-primary {
+  background: rgb(243, 255, 255);
+}
+
+.table-primary th {
+  border-top: 1px solid #dee2e6;
+}
+
+#btn-fixparam {
+  margin-top: 10px;
+}
 
 </style>
