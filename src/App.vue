@@ -59,7 +59,7 @@ export default {
 
 .appNav {
   /* display:inline-block; */
-  background-color: rgb(0, 163, 141);
+  background-color: #52bacc;
 }
 
 .logo {

@@ -151,10 +151,10 @@ export default {
         'enableOAMGPS': 1
       }
       console.log(attr)
-      this.$http.post('http://10.101.129.52:5888/son/field/modifyField', attr)
+      this.$http.post('http://211.20.94.206:5888/son/field/modifyField', attr)
         .then(rsp => {
           // console.log(rsp)
-          return this.$http.get('http://10.101.129.52:5888/son/field/fieldList')
+          return this.$http.get('http://211.20.94.206:5888/son/field/fieldList')
         })
         .then(rsp => {
           // this.$root.reload()

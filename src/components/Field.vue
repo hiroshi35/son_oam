@@ -36,14 +36,21 @@
           <li><a href="">立即執行</a></li>
         </ul>
       </div>
-      <button type="button" class="btn btn-info pull-right" :style="mapBtnDsp" id="btn_show_map_deivce" @click="switchList()">{{"基地台列表("+deviceList.length+")"}}</button>
-      <button type="button" class="btn btn-info pull-right" :style="listBtnDsp" id="btn_show_map_deivce" @click="switchMap()">地圖模式</button>
+      <button type="button" class="btn btn-info pull-right" :style="mapBtnDsp" id="btn_show_map_deivce" @click="switchList()"><strong>{{"基地台列表("+deviceList.length+")"}}</strong></button>
+      <button type="button" class="btn btn-info pull-right" :style="listBtnDsp" id="btn_show_map_deivce" @click="switchMap()"><strong>地圖模式</strong></button>
       <!-- MAP AND LIST -->
-      <div id="gmap" :style="mapDsp" class="map_scope"></div>
+      <div class="card" :style="mapDsp" id='mapCard'>
+        <div class="card-header bg-info" style="padding: 1px; margin: 0px;">
+          <strong style="margin:10px">{{fieldInfo.fieldName}}</strong>
+        </div>
+        <div class="card-body" style="padding: 0px">
+          <div id="gmap"  class="map_scope"></div>
+        </div>
+      </div>
       <div class="celllist clearfix" id="list" :style="listDsp">
-        <h4>基地台列表</h4>
+        <h4 class='deviceNum'>基地台列表</h4>
         <div class="row">
-          <div class="col-md-6 cellnum">
+          <div class="col-md-6 cellnum deviceNum">
             目前有{{deviceList.length}}台基地台
           </div>
         </div>
@@ -138,7 +145,7 @@
                     </tr>
                   </tbody>
               </table>
-              <center><button class="btn btn-warning " id='btn-fixparam'>修改參數</button></center>
+              <center><button class="btn btn-info " id='btn-fixparam'><strong>修改參數</strong></button></center>
             </div>
           </div>
         </div>
@@ -171,13 +178,13 @@ export default {
       deviceListParam: ['No', 'Device ID', 'IP Address', 'PCI', 'TxPower', 'Beam Pattern', 'Status'],
       neighborExam: [
         {
-          'pci': 1,
-          'cellId': 1,
+          'pci': 152,
+          'cellId': 108,
           'plmnId': 46656
         },
         {
-          'pci': 2,
-          'cellId': 2,
+          'pci': 159,
+          'cellId': 112,
           'plmnId': 46656
         }
       ],
@@ -196,7 +203,7 @@ export default {
   computed: {},
   // props: ['fieldId'],
   mounted () {
-    this.$http.get('http://10.101.129.52:5888/son/field/fieldList')
+    this.$http.get('http://211.20.94.206:5888/son/field/fieldList')
       .then(rsp => {
         let param = {}
         // console.log(rsp.body.fieldList)
@@ -228,7 +235,7 @@ export default {
           fieldId: this.$route.params.id,
           'deviceList': []
         }
-        return this.$http.post('http://10.101.129.51:5888/hems/getCertainParameters', attr)
+        return this.$http.post('http://211.20.94.205:5888/hems/getCertainParameters', attr)
       })
       .then(rsp => {
         let param = rsp.data.parameter
@@ -252,7 +259,7 @@ export default {
           this.deviceList.push(device)
         }
         // console.log(param)
-        return this.$http.get(`http://10.101.129.52:5888/son/oam/${this.$route.params.id}/DeviceListSort?key=`)
+        return this.$http.get(`http://211.20.94.206:5888/son/oam/${this.$route.params.id}/DeviceListSort?key=`)
       })
       .then(rsp => {
         // console.log(rsp.body.devices)
@@ -378,7 +385,7 @@ export default {
 
 #mapZone {
   display: inline-block;
-  background-color: rgb(225, 255, 244);
+  background-color: #F7E3DA;
   /* border: 1px solid rgb(74, 153, 255); */
   /* width: 60%; */
   padding-top: 10px;
@@ -387,18 +394,9 @@ export default {
   box-sizing: border-box;
 }
 
-.map_scope {
-  border: 1px solid rgb(112, 174, 255);
-  /* width: 60%; */
-  margin-top: 10px;
-  /* float: left; */
-  /* height: 100%; */
-  /* display: inline-block; */
-}
-
 #panelZone {
   /* border: 1px solid rgb(112, 174, 255); */
-  background: rgb(225, 255, 244);
+  background: #F7E3DA;
   width: 40%;
   /* height: 765px; */
   /* padding-top: 10px;
@@ -464,4 +462,29 @@ table {
   margin-top: 10px;
 }
 
+#mapCard {
+  margin-top: 10px;
+}
+
+button {
+  background: #db9797;
+  border: #db9797;
+}
+
+.bg-info {
+  background-color: #66BDCC !important;
+}
+
+.thead-dark {
+  background-color: #66BDCC !important;
+}
+
+/* @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@700&display=swap'); */
+.deviceNum {
+  /* font-weight: bold; */
+  font-family: 'Noto Sans TC', sans-serif;
+}
+/* .bg-light {
+  background-color: #DAB4B4 !important;
+} */
 </style>

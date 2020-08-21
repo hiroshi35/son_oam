@@ -9,10 +9,14 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 // import vueaxios from 'vue-axios'
 import VueResource from 'vue-resource'
 // import axios from 'axios'
+// import Quasar from 'quasar'
+import Quasar from 'quasar-framework/dist/quasar.mat.esm'
+import 'quasar-framework/dist/umd/quasar.mat.css'
 
 Vue.config.productionTip = false
 Vue.use(BootstrapVue)
 Vue.use(VueResource)
+Vue.use(Quasar)
 // Vue.use(axios)
 
 /* eslint-disable no-new */

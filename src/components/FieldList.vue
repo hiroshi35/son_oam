@@ -59,7 +59,7 @@ export default {
     }
   },
   mounted () {
-    this.$http.get('http://10.101.129.52:5888/son/oam/sonAllFieldInfo?method=fieldid_asc&from=1&to=')
+    this.$http.get('http://211.20.94.206:5888/son/oam/sonAllFieldInfo?method=fieldid_asc&from=1&to=')
       .then(rsp => {
         let fieldList = rsp.body.fieldList
         console.log(fieldList)

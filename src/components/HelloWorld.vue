@@ -1,13 +1,15 @@
 <template>
   <div id="hello">
-    <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-    Link with href
-    </a>
-    <div class="collapse" id="collapseExample">
-      <div class="card card-body">
-        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
-      </div>
-    </div>
+    <!-- <div class="q-pa-md q-gutter-sm"> -->
+    <q-btn color="white" text-color="black" label="Standard" />
+    <q-btn color="primary" label="Primary" />
+    <q-btn color="secondary" label="Secondary" />
+    <q-btn color="amber" glossy label="Amber" />
+    <q-btn color="brown-5" label="Brown 5" />
+    <q-btn color="deep-orange" glossy label="Deep Orange" />
+    <q-btn color="purple" label="Purple" />
+    <q-btn color="black" label="Black" />
+    <!-- </div> -->
   <!-- <div> -->
     <!-- <Modaldog v-if='show' :msg='msg' style='display:block' @close="show = false">
     </Modaldog>
@@ -18,6 +20,7 @@
 
 <script>
 import EditFieldModal from './EditFieldModal'
+import { QBtn } from 'quasar-framework/dist/quasar.mat.esm'
 
 export default {
   name: 'HelloWorld',
@@ -28,7 +31,8 @@ export default {
     }
   },
   components: {
-    Modaldog: EditFieldModal
+    Modaldog: EditFieldModal,
+    QBtn
   }
 }
 </script>
